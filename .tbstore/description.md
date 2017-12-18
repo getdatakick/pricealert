@@ -3,7 +3,7 @@ This free module will let your customers easily create price alerts on products 
 
 Not only is this a powerful incentive for them to return to your shop, but it also gives you interesting information - email addresses and expected price. You can use it to optimise your pricing strategy or for other marketing purposes.
 
-![screencast](images/screencast.gif)
+![screencast](https://www.getdatakick.com/images/extras/price-alert/screencast.gif)
 
 ## Features
 
