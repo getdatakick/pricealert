@@ -1,0 +1,516 @@
+.cleanslate, .cleanslate h1, .cleanslate h2, .cleanslate h3, .cleanslate h4, .cleanslate h5, .cleanslate h6, .cleanslate p, .cleanslate td, .cleanslate dl, .cleanslate tr, .cleanslate dt, .cleanslate ol, .cleanslate form, .cleanslate select, .cleanslate option, .cleanslate pre, .cleanslate div, .cleanslate table,  .cleanslate th, .cleanslate tbody, .cleanslate tfoot, .cleanslate caption, .cleanslate thead, .cleanslate ul, .cleanslate li, .cleanslate address, .cleanslate blockquote, .cleanslate dd, .cleanslate fieldset, .cleanslate li, .cleanslate iframe, .cleanslate strong, .cleanslate legend, .cleanslate em, .cleanslate summary, .cleanslate cite, .cleanslate span, .cleanslate input, .cleanslate sup, .cleanslate label, .cleanslate dfn, .cleanslate object, .cleanslate big, .cleanslate q, .cleanslate samp, .cleanslate acronym, .cleanslate small, .cleanslate img, .cleanslate strike, .cleanslate code, .cleanslate sub, .cleanslate ins, .cleanslate textarea, .cleanslate button, .cleanslate var, .cleanslate a, .cleanslate abbr, .cleanslate applet, .cleanslate del, .cleanslate kbd, .cleanslate tt, .cleanslate b, .cleanslate i, .cleanslate hr, .cleanslate article, .cleanslate aside, .cleanslate figure, .cleanslate figcaption, .cleanslate footer, .cleanslate header, .cleanslate menu, .cleanslate nav, .cleanslate section, .cleanslate time, .cleanslate mark, .cleanslate audio, .cleanslate video, .cleanslate abbr, .cleanslate address, .cleanslate area, .cleanslate blockquote, .cleanslate canvas, .cleanslate caption, .cleanslate cite, .cleanslate code, .cleanslate colgroup, .cleanslate col, .cleanslate datalist, .cleanslate fieldset, .cleanslate main, .cleanslate map, .cleanslate meta, .cleanslate optgroup, .cleanslate output, .cleanslate progress {
+  background-attachment:scroll;
+    background-color:transparent;
+    background-image:none; /* This rule affects the use of pngfix JavaScript http://dillerdesign.com/experiment/DD_BelatedPNG for IE6, which is used to force the browser to recognise alpha-transparent PNGs files that replace the IE6 lack of PNG transparency. (The rule overrides the VML image that is used to replace the given CSS background-image). If you don't know what that means, then you probably haven't used the pngfix script, and this comment may be ignored :) */
+    background-position:0 0;
+    background-repeat:repeat;
+    border-color:black;
+    border-color:currentColor; /* `border-color` should match font color. Modern browsers (incl. IE9) allow the use of "currentColor" to match the current font 'color' value <http://www.w3.org/TR/css3-color/#currentcolor>. For older browsers, a default of 'black' is given before this rule. Guideline to support older browsers: if you haven't already declared a border-color for an element, be sure to do so, e.g. when you first declare the border-width. */
+    border-radius:0;
+    border-style:none;
+    border-width:medium;
+    bottom:auto;
+    clear:none;
+    clip:auto;
+    color:inherit;
+    counter-increment:none;
+    counter-reset:none;
+    cursor:auto;
+    direction:inherit;
+    display:inline;
+    float:none;
+    font-family: inherit; /* As with other inherit values, this needs to be set on the root container element */
+    font-size: inherit;
+    font-style:inherit;
+    font-variant:normal;
+    font-weight:inherit;
+    height:auto;
+    left:auto;
+    letter-spacing:normal;
+    line-height:inherit;
+    list-style-type: inherit; /* Could set list-style-type to none */
+    list-style-position: outside;
+    list-style-image: none;
+    margin:0;
+    max-height:none;
+    max-width:none;
+    min-height:0;
+    min-width:0;
+    opacity:1;
+    outline:invert none medium;
+    overflow:visible;
+    padding:0;
+    position:static;
+    quotes: "" "";
+    right:auto;
+    table-layout:auto;
+    text-align:inherit;
+    text-decoration:inherit;
+    text-indent:0;
+    text-transform:none;
+    top:auto;
+    unicode-bidi:normal;
+    vertical-align:baseline;
+    visibility:inherit;
+    white-space:normal;
+    width:auto;
+    word-spacing:normal;
+    z-index:auto;
+
+    /* CSS3 */
+    /* Including all prefixes according to http://caniuse.com/ */
+    /* CSS Animations don't cascade, so don't require resetting */
+    -webkit-background-origin: padding-box;
+            background-origin: padding-box;
+    -webkit-background-clip: border-box;
+            background-clip: border-box;
+    -webkit-background-size: auto;
+       -moz-background-size: auto;
+            background-size: auto;
+    -webkit-border-image: none;
+       -moz-border-image: none;
+         -o-border-image: none;
+            border-image: none;
+    -webkit-border-radius:0;
+       -moz-border-radius:0;
+            border-radius: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-column-count: auto;
+       -moz-column-count: auto;
+            column-count: auto;
+    -webkit-column-gap: normal;
+       -moz-column-gap: normal;
+            column-gap: normal;
+    -webkit-column-rule: medium none black;
+       -moz-column-rule: medium none black;
+            column-rule: medium none black;
+    -webkit-column-span: 1;
+       -moz-column-span: 1; /* doesn't exist yet but probably will */
+            column-span: 1;
+    -webkit-column-width: auto;
+       -moz-column-width: auto;
+            column-width: auto;
+    font-feature-settings: normal;
+    overflow-x: visible;
+    overflow-y: visible;
+    -webkit-hyphens: manual;
+       -moz-hyphens: manual;
+            hyphens: manual;
+    -webkit-perspective: none;
+       -moz-perspective: none;
+        -ms-perspective: none;
+         -o-perspective: none;
+            perspective: none;
+    -webkit-perspective-origin: 50% 50%;
+       -moz-perspective-origin: 50% 50%;
+        -ms-perspective-origin: 50% 50%;
+         -o-perspective-origin: 50% 50%;
+            perspective-origin: 50% 50%;
+    -webkit-backface-visibility: visible;
+       -moz-backface-visibility: visible;
+        -ms-backface-visibility: visible;
+         -o-backface-visibility: visible;
+            backface-visibility: visible;
+    text-shadow: none;
+    -webkit-transition: all 0s ease 0s;
+            transition: all 0s ease 0s;
+    -webkit-transform: none;
+       -moz-transform: none;
+        -ms-transform: none;
+         -o-transform: none;
+            transform: none;
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+         -o-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transform-style: flat;
+       -moz-transform-style: flat;
+        -ms-transform-style: flat;
+         -o-transform-style: flat;
+            transform-style: flat;
+    word-break: normal;
+}
+
+/* == BLOCK-LEVEL == */
+/* Actually, some of these should be inline-block and other values, but block works fine (TODO: rigorously verify this) */
+/* HTML 4.01 */
+.cleanslate, .cleanslate h3, .cleanslate h5, .cleanslate p, .cleanslate h1, .cleanslate dl, .cleanslate dt, .cleanslate h6, .cleanslate ol, .cleanslate form, .cleanslate option, .cleanslate pre, .cleanslate div, .cleanslate h2, .cleanslate caption, .cleanslate h4, .cleanslate ul, .cleanslate address, .cleanslate blockquote, .cleanslate dd, .cleanslate fieldset, .cleanslate hr,
+
+/* HTML5 new elements */
+.cleanslate article, .cleanslate dialog, .cleanslate figure, .cleanslate footer, .cleanslate header, .cleanslate hgroup, .cleanslate menu, .cleanslate nav, .cleanslate section, .cleanslate audio, .cleanslate video, .cleanslate address, .cleanslate blockquote, .cleanslate colgroup, .cleanslate main, .cleanslate progress, .cleanslate summary {
+    display:block;
+}
+.cleanslate h1, .cleanslate h2, .cleanslate h3, .cleanslate h4, .cleanslate h5, .cleanslate h6 {
+    font-weight: bold;
+}
+.cleanslate h1 {
+    font-size: 2em;
+    padding: .67em 0;
+}
+.cleanslate h2 {
+    font-size: 1.5em;
+    padding: .83em 0;
+}
+.cleanslate h3 {
+    font-size: 1.17em;
+    padding: .83em 0;
+}
+.cleanslate h4 {
+    font-size: 1em;
+}
+.cleanslate h5 {
+    font-size: .83em;
+}
+.cleanslate p {
+    margin: 1em 0;
+}
+.cleanslate table {
+    display: table;
+}
+.cleanslate thead {
+    display: table-header-group;
+}
+.cleanslate tbody {
+    display: table-row-group;
+}
+.cleanslate tfoot {
+    display: table-footer-group;
+}
+.cleanslate tr {
+    display: table-row;
+}
+.cleanslate th, .cleanslate td {
+    display: table-cell;
+    padding: 2px;
+}
+
+/* == SPECIFIC ELEMENTS == */
+/* Some of these are browser defaults; some are just useful resets */
+.cleanslate ol, .cleanslate ul {
+    margin: 1em 0;
+}
+.cleanslate ul li, .cleanslate ul ul li, .cleanslate ul ul ul li, .cleanslate ol li, .cleanslate ol ol li, .cleanslate ol ol ol li, .cleanslate ul ol ol li, .cleanslate ul ul ol li, .cleanslate ol ul ul li, .cleanslate ol ol ul li {
+    list-style-position: inside;
+    margin-top: .08em;
+}
+.cleanslate ol ol, .cleanslate ol ol ol, .cleanslate ul ul, .cleanslate ul ul ul, .cleanslate ol ul, .cleanslate ol ul ul, .cleanslate ol ol ul, .cleanslate ul ol, .cleanslate ul ol ol, .cleanslate ul ul ol {
+    padding-left: 40px;
+    margin: 0;
+}
+/* helper for general navigation */
+.cleanslate nav ul, .cleanslate nav ol {
+    list-style-type:none;
+
+}
+.cleanslate ul, .cleanslate menu {
+    list-style-type:disc;
+}
+.cleanslate ol {
+    list-style-type:decimal;
+}
+.cleanslate ol ul, .cleanslate ul ul, .cleanslate menu ul, .cleanslate ol menu, .cleanslate ul menu, .cleanslate menu menu {
+    list-style-type:circle;
+}
+.cleanslate ol ol ul, .cleanslate ol ul ul, .cleanslate ol menu ul, .cleanslate ol ol menu, .cleanslate ol ul menu, .cleanslate ol menu menu, .cleanslate ul ol ul, .cleanslate ul ul ul, .cleanslate ul menu ul, .cleanslate ul ol menu, .cleanslate ul ul menu, .cleanslate ul menu menu, .cleanslate menu ol ul, .cleanslate menu ul ul, .cleanslate menu menu ul, .cleanslate menu ol menu, .cleanslate menu ul menu, .cleanslate menu menu menu {
+    list-style-type:square;
+}
+.cleanslate li {
+    display:list-item;
+    min-height:auto;
+    min-width:auto;
+    padding-left: 20px; /* replace -webkit-padding-start: 40px; */
+}
+.cleanslate strong {
+    font-weight:bold;
+}
+.cleanslate em {
+    font-style:italic;
+}
+.cleanslate kbd, .cleanslate samp, .cleanslate code, .cleanslate pre {
+  font-family:monospace;
+}
+
+.cleanslate a, .cleanslate a *, .cleanslate input[type=submit], .cleanslate input[type=radio], .cleanslate input[type=checkbox], .cleanslate select {
+    cursor:pointer;
+}
+
+.cleanslate input[type=hidden] {
+    display:none;
+}
+
+.cleanslate select, .cleanslate textarea, .cleanslate input {
+    border:1px solid #ccc;
+}
+.cleanslate select {
+    font-size: 11px;
+    display: inline-block;
+}
+
+.cleanslate input[type=text] {
+    background: white;
+    padding: 1px;
+    font-family: initial;
+    font-size: small;
+}
+.cleanslate input[type=checkbox], .cleanslate input[type=radio] {
+    border: 1px #2b2b2b solid;
+    border-radius: 4px;
+}
+.cleanslate input[type=checkbox], .cleanslate input[type=radio] {
+    outline: intial;
+}
+.cleanslate input[type=radio] {
+    margin: 2px 2px 3px 2px;
+}
+.cleanslate abbr[title], .cleanslate acronym[title], .cleanslate dfn[title] {
+    cursor:help;
+    border-bottom-width:1px;
+    border-bottom-style:dotted;
+}
+.cleanslate ins {
+    background-color:#ff9;
+    color:black;
+}
+.cleanslate del {
+    text-decoration: line-through;
+}
+.cleanslate blockquote, .cleanslate q  {
+    quotes:none; /* HTML5 */
+}
+.cleanslate blockquote:before, .cleanslate blockquote:after, .cleanslate q:before, .cleanslate q:after, .cleanslate li:before, .cleanslate li:after  {
+    content:"";
+}
+.cleanslate input, .cleanslate select {
+    vertical-align:middle;
+}
+
+.cleanslate table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+.cleanslate hr {
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #ccc;
+    margin:1em 0;
+}
+.cleanslate *[dir=rtl] {
+    direction: rtl;
+}
+.cleanslate mark {
+    background-color:#ff9;
+    color:black;
+    font-style:italic;
+    font-weight:bold;
+}
+.cleanslate menu {
+    padding-left: 40px;
+    padding-top: 8px;
+}
+
+/* additional helpers */
+.cleanslate [hidden],
+.cleanslate template {
+    display: none;
+}
+.cleanslate abbr[title] {
+    border-bottom: 1px dotted;
+}
+.cleanslate sub, .cleanslate sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+.cleanslate sup {
+    top: -0.5em;
+}
+.cleanslate sub {
+    bottom: -0.25em;
+}
+.cleanslate img {
+    border: 0;
+}
+.cleanslate figure {
+    margin: 0;
+}
+.cleanslate textarea {
+    overflow: auto;
+    vertical-align: top;
+}
+
+.cleanslate pre {
+    white-space:pre;
+}
+
+
+.cleanslate {
+    font-size: medium;
+    line-height: 1;
+    direction:ltr;
+    text-align: left; /* for IE, Opera */
+    text-align: start; /* recommended W3C Spec */
+    font-family: "Times New Roman", Times, serif; /* Override this with whatever font-family is required */
+    color: black;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    list-style-type:disc;
+
+}
+
+.cleanslate .fixedLayout {
+  z-index: 1999;
+  background: white;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  transition: left 500ms ease;
+}
+
+.buttons {
+  width: 100%;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.product {
+  position: relative;
+  width: 100%;
+  padding-left: 270px;
+}
+
+.inner {
+  min-height: 300px;
+}
+
+.groups {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.groups > div {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 256px;
+}
+
+.image {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 250px;
+  img {
+    width: 250px;
+    height: 250px;
+  }
+  .descr {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+  }
+}
+
+.label, .cleanslate .label {
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+  div {
+    padding: 15px;
+    font-size: 2em;
+    font-weight: 900;
+  }
+}
+
+.email {
+  padding-left: 160px;
+  .icon {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.error {
+  color: #bf3434;
+}
+
+@media (max-width: 700px) {
+  .cleanslate {
+    .product {
+      width: calc('~100%-20px');
+      height: 100%;
+      padding-left: 10px;
+      padding: 10px;
+    }
+    .buttons {
+      width: 100%;
+      padding-left: 0px;
+      padding-bottom: 40px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .groups > div {
+      width: 100%;
+    }
+    .email {
+      width: calc('~100%-20px');
+      padding-left: 10px;
+      padding: 10px;
+      position: relative;
+      .icon {
+        position: relative;
+        top: 0px;
+        left: 0px;
+      }
+      &>div {
+        width: 100%;
+      }
+      &>div:first-child {
+        text-align: center;
+      }
+    }
+    .image {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column-reverse;
+      div {
+        width: 100%;
+        flex-shrink: 0;
+        flex-grow: 0;
+      }
+      img {
+        width: auto;
+        height: 25vh;
+      }
+    }
+  }
+}
+
+
+.root, .root *, .root *:before, .root *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.root {
+  padding: 30px 30px 6px 30px;
+}

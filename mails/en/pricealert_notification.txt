@@ -1,0 +1,6 @@
+New price alert created.
+
+email: {email}
+product: {product_name}
+product url: {product_url}
+price: {price}

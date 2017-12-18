@@ -1,0 +1,26 @@
+#pricealert-button-launch {
+	font-weight: 700;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background-color: transparent;
+	border-color: transparent;
+	margin: auto;
+	outline: 0;
+	cursor: pointer; 
+}
+
+#pricealert-button-launch:before {
+	content: "\f0a2";
+	font: 400 15px/31px "FontAwesome";
+	color: #fff;
+	background: #929292;
+	width: 30px;
+	text-align: center;
+	display: inline-block;
+	height: 30px;
+	margin: 0 6px 0 0;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px; 
+}

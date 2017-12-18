@@ -1,0 +1,15 @@
+Great news from {shop_name}.
+
+Price on {product_name} has just dropped to {price}.
+
+Please visit our store to see details: {product_url}
+
+
+
+{shop_name}
+
+-------------------------------
+
+You have received this email because you opted to be notified when price changes. 
+You will not receive another email unless you have created price alert on different product.
+

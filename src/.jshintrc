@@ -1,0 +1,11 @@
+{
+	"browser": true,
+	"browserify": true,
+	"devel": true,
+	"newcap": false,
+	"esnext": true,
+	"predef": [
+		"APP_SERVER",
+		"API_SERVER"
+	]
+}

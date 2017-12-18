@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Transform</title>
+  </head>
+  <body>
+    <div id="pricealert-dialog"></div>
+    <div id="pricealert-button-launch" style="position:absolute;top:10px;left:10px;width:100px;height:100px;background:blue" onclick="PriceAlert(true)"></div>
+    <script>
+      window.priceAlertUrl = 'http://www.shop';
+      window.$ = {
+        ajax: function(data) {
+          console.log('AJAX REQUEST', data);
+          data.success();
+        }
+      };
+      window.ps_round = function(val) {
+        return Math.round(val*100)/100;
+      };
+      window.formatCurrency = function(val) {
+        return "$" + val.toFixed(2);
+      };
+
+      window.priceAlertData = {
+          "customer": {
+              "id": null,
+              "email": null
+          },
+          "product": {
+              "id": 1,
+              "name": "Faded Short Sleeves T-shirt",
+              "image": "http://fo.demo.prestashop.com/1-home_default/faded-short-sleeves-tshirt.jpg",
+              "price": 16.51,
+              "attributes": [
+                    {
+                      "id": 1,
+                      "name": "Size",
+                      "type": "select",
+                      "values": [
+                          {
+                              "id": 1,
+                              "name": "S"
+                          },
+                          {
+                              "id": 2,
+                              "name": "M"
+                          },
+                          {
+                              "id": 3,
+                              "name": "L"
+                          }
+                      ],
+                  },
+                  {
+                      "id": 3,
+                      "name": "Color",
+                      "type": "color",
+                      "values": [
+                          {
+                              "id": 13,
+                              "name": "Orange"
+                          },
+                          {
+                              "id": 14,
+                              "name": "Blue"
+                          }
+                      ]
+                  }
+              ],
+              "colors": {
+                  "13": {
+                      "value": "#F39C11",
+                      "name": "Orange",
+                      "attributes_quantity": 899
+                  },
+                  "14": {
+                      "value": "#5D9CEC",
+                      "name": "Blue",
+                      "attributes_quantity": 900
+                  }
+              },
+              "combinations": [
+                  {
+                      "id": 1,
+                      "attributes": {
+                          "1": 1,
+                          "3": 13
+                      },
+                      "price": 16.51,
+                      "quantity": 299,
+                      "image": "http://fo.demo.prestashop.com/1-home_default/faded-short-sleeves-tshirt.jpg"
+                  },
+                  {
+                      "id": 3,
+                      "attributes": {
+                          "1": 2,
+                          "3": 13
+                      },
+                      "price": 16.51,
+                      "quantity": 300,
+                      "image": "http://fo.demo.prestashop.com/1-home_default/faded-short-sleeves-tshirt.jpg"
+                  },
+                  {
+                      "id": 4,
+                      "attributes": {
+                          "1": 2,
+                          "3": 14
+                      },
+                      "price": 16.51,
+                      "quantity": 300,
+                      "image": "http://fo.demo.prestashop.com/3-home_default/faded-short-sleeves-tshirt.jpg"
+                  },
+                  {
+                      "id": 5,
+                      "attributes": {
+                          "1": 3,
+                          "3": 13
+                      },
+                      "price": 16.51,
+                      "quantity": 300,
+                      "image": "http://fo.demo.prestashop.com/1-home_default/faded-short-sleeves-tshirt.jpg"
+                  },
+                  {
+                      "id": 6,
+                      "attributes": {
+                          "1": 3,
+                          "3": 14
+                      },
+                      "price": 16.51,
+                      "quantity": 300,
+                      "image": "http://fo.demo.prestashop.com/3-home_default/faded-short-sleeves-tshirt.jpg"
+                  }
+              ]
+          },
+          "currency": {
+              "id": 1,
+              "name": "Dollar",
+              "iso_code": "USD",
+              "iso_code_num": "840",
+              "sign": "$",
+              "blank": "0",
+              "conversion_rate": "1.000000",
+              "deleted": "0",
+              "format": "1",
+              "decimals": "1",
+              "active": "1",
+              "prefix": "$ ",
+              "suffix": "",
+              "id_shop_list": null,
+              "force_id": false
+          },
+          "config": {
+              "separator": "-",
+              "defaultDiscount": 0.8,
+              "minDiscount": 0.2,
+              "showFullScale": true,
+              "step": 0.005
+          },
+          "translation": {
+              "alert_me_when_price_drops_to": "Alert me when price drops to",
+              "current_price": "Current price",
+              "cancel": "Cancel",
+              "create_alert": "Create alert",
+              "your_email_address": "Your Email Address",
+              "alert_has_been_created": "Alert has been created",
+              "combination_does_not_exists": "This combination does not exists"
+          }
+      }
+    </script>
+    <script src="/pricealert.js"></script>
+  </body>
+</html>
