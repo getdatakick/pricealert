@@ -18,4 +18,4 @@ Not only is this a powerful incentive for them to return to your shop, but it al
 
 Module itself doesn't have any functionality to export price alert data, but it is integrated with [DataKick module](https://www.getdatakick.com/) - your price alerts data will be available for creating lists, xml exports, inline editing and mass updates just as any regular record type. Minimal required version of datakick module is 2.1.0
 
-![price alert datakick integration](images/price-alert-list.png)
+![price alert datakick integration](.tbstore/images/price-alert-list.png)

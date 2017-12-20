@@ -1,4 +1,5 @@
 (function() {
+  window.priceAlertUrl = window.priceAlertUrl.replace('http:', window.location.protocol);
   window.showPriceAlert = false;
   window.PriceAlert = function(show) {
     if (show) {
