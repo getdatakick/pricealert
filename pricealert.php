@@ -505,10 +505,15 @@ class PriceAlert extends Module
 
 	public function hookDisplayProductButtons($params)
 	{
-		$this->smarty->assign(array(
-			'data' => array(
+    $product = $params['product'];
+    if (is_array($product)) {
+      $product = new Product($product['id']);
+    }
+    $this->context->smarty->assign(array(
+      'priceAlertUrl' => $this->context->shop->getBaseURI() . 'modules/pricealert/ajax.php',
+			'priceAlertData' => array(
 				'customer' => $this->getCustomer(),
-				'product' => $this->getProduct($params['product']),
+				'product' => $this->getProduct($product),
 				'currency' => $this->context->currency,
 				'config' => array(
 					'theme' => 'light',
@@ -527,8 +532,7 @@ class PriceAlert extends Module
 				)
 			)
 		));
-
-		return ($this->display(__FILE__, 'views/templates/hook/pricealert.tpl'));
+		return $this->display(__FILE__, 'views/templates/hook/pricealert.tpl');
 	}
 
 	protected function getCustomer() {
