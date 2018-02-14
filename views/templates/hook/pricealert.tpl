@@ -14,7 +14,7 @@
   </a>
   <div id="pricealert-dialog"></div>
 </p>
-<script>
-var priceAlertData={$priceAlertData|json_encode nofilter};
-var priceAlertUrl="{$priceAlertUrl}";
+<script type="text/javascript">
+  var priceAlertData={$priceAlertData|json_encode nofilter};
+  var priceAlertUrl="{$priceAlertUrl}";
 </script>
