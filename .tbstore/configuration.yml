@@ -19,3 +19,4 @@ php_version:
   - 5.6
   - 7.0
   - 7.1
+gdpr_compliant: true
