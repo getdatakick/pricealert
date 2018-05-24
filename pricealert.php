@@ -508,7 +508,7 @@ class PriceAlert extends Module
   			$images = (isset($comb[$combination][0])) ? $comb[$combination] : $product->getImages($context->language->id);
   		}
   		$image_id = (int)((isset($images[0]['id_image']) ? $images[0]['id_image'] : 0));
-  		$image = $this->getImageLink($product->link_rewrite, $image_id);
+  		$image = self::getImageLinkStatic($context->link, $product->link_rewrite, $image_id, $context->language->id);
   		$currency = Currency::getCurrencyInstance((int)$data['id_format_currency']);
 
     	$data = array(
@@ -700,15 +700,20 @@ class PriceAlert extends Module
 			);
 	}
 
-  private function getImageLink($rewrite, $imageId) {
+  private static function getImageLinkStatic($link, $rewrite, $imageId, $languageId) {
     if ($imageId) {
-      $link = $this->context->link;
       if (is_array($rewrite)) {
-        $rewrite = $rewrite[$this->context->language->id];
+        $rewrite = $rewrite[$languageId];
       }
       $type = is_callable('ImageType', 'getFormattedName') ? ImageType::getFormattedName('home') : ImageType::getFormatedName('home');
       return $link->getImageLink($rewrite, $imageId, $type);
     }
     return '';
+  }
+
+  private function getImageLink($rewrite, $imageId) {
+    $link = $this->context->link;
+    $language = $this->context->language->id;
+    return self::getImageLinkStatic($link, $rewrite, $imageId, $language);
   }
 }

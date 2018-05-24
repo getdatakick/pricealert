@@ -1,6 +1,5 @@
 <?php
-define('PRICEALERT_PS_BASE', '/Users/tyruk/sites/prestashop_1730');
-//define('PRICEALERT_PS_BASE', dirname(__FILE__) . '/../..');
+define('PRICEALERT_PS_BASE', dirname(__FILE__) . '/../..');
 require_once(PRICEALERT_PS_BASE.'/config/config.inc.php');
 require_once(PRICEALERT_PS_BASE.'/init.php');
 require_once(dirname(__FILE__).'/pricealert.php');
