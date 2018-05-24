@@ -57,6 +57,7 @@ class App extends React.PureComponent<Props> {
     return (
       <div className={css.cleanslate}>
         <Wrapper
+          className='pricealert-dialog'
           open={show}
           autoScrollBodyContent={true}
           onRequestClose={() => setShow(false)}
