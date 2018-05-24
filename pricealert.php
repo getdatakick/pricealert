@@ -705,7 +705,7 @@ class PriceAlert extends Module
       if (is_array($rewrite)) {
         $rewrite = $rewrite[$languageId];
       }
-      $type = is_callable('ImageType', 'getFormattedName') ? ImageType::getFormattedName('home') : ImageType::getFormatedName('home');
+      $type = is_callable(array('ImageType', 'getFormattedName')) ? ImageType::getFormattedName('home') : ImageType::getFormatedName('home');
       return $link->getImageLink($rewrite, $imageId, $type);
     }
     return '';
