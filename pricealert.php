@@ -10,7 +10,7 @@ class PriceAlert extends Module
 	{
 		$this->name = 'pricealert';
 		$this->tab = 'front_office_features';
-		$this->version = '1.0.9';
+		$this->version = '1.0.10';
 		$this->author = 'Petr Hucik <petr.hucik@gmail.com>';
 		$this->need_instance = 0;
 
@@ -44,6 +44,9 @@ class PriceAlert extends Module
 			$this->registerHook('displayProductButtons') &&
 			$this->registerHook('actionProductUpdate') &&
 			$this->registerHook('datakickExtend') &&
+      $this->registerHook('registerGDPRConsent') &&
+      $this->registerHook('actionDeleteGDPRCustomer') &&
+      $this->registerHook('actionExportGDPRData') &&
 			$this->registerHook('header')
 		);
 	}
@@ -138,6 +141,18 @@ class PriceAlert extends Module
 				'size' => 20,
 				'required' => false
 			),
+      'PH_PRICEALERT_SHOW_CONSENT' => array(
+				'type' => 'switch',
+				'name' => 'PH_PRICEALERT_SHOW_CONSENT',
+        'is_bool' => true,
+        'values' => array(
+          array('id' => 'active_on', 'value' => 1, 'label' => $this->l('Enabled')),
+          array('id' => 'active_off', 'value' => 0, 'label' => $this->l('Disabled'))
+        ),
+				'label' => $this->l('Show GDPR consent message'),
+				'size' => 20,
+				'required' => true
+			),
 		);
 	}
 
@@ -155,6 +170,7 @@ class PriceAlert extends Module
       }
       Configuration::updateValue('PH_PRICEALERT_NOTIFICATION_EMAIL', $email);
       Configuration::updateValue('PH_PRICEALERT_SEND_NOTIFICATION', Tools::getValue('PH_PRICEALERT_SEND_NOTIFICATION') ? 1 : 0);
+      Configuration::updateValue('PH_PRICEALERT_SHOW_CONSENT', Tools::getValue('PH_PRICEALERT_SHOW_CONSENT') ? 1 : 0);
 			if ($minDiscount !== false && $defaultDiscount !== false) {
 				Configuration::updateValue('PH_PRICEALERT_MIN_DISCOUNT', $minDiscount);
 				Configuration::updateValue('PH_PRICEALERT_DEFAULT_DISCOUNT', $defaultDiscount);
@@ -216,6 +232,7 @@ class PriceAlert extends Module
 		$helper->fields_value['PH_PRICEALERT_DEFAULT_DISCOUNT'] = 100 * self::getDefaultDiscount();
     $helper->fields_value['PH_PRICEALERT_SEND_NOTIFICATION'] = self::getSendNotification();
     $helper->fields_value['PH_PRICEALERT_NOTIFICATION_EMAIL'] = self::getNotificationEmail();
+    $helper->fields_value['PH_PRICEALERT_SHOW_CONSENT'] = self::getShowConsent();
 		return $helper->generateForm($fields_form);
 	}
 
@@ -414,8 +431,7 @@ class PriceAlert extends Module
 			$images = (isset($comb[$combination][0])) ? $comb[$combination] : $product->getImages($this->context->language->id);
 		}
 		$image_id = (int)(isset($images[0]['id_image']) ? $images[0]['id_image'] : 0);
-		$link = new Link();
-		$image = $link->getImageLink($product->link_rewrite, $image_id, ImageType::getFormatedName('home'));
+		$image = $this->getImageLink($product->link_rewrite, $image_id);
 
 		$currency = Currency::getCurrencyInstance((int)$alert['id_format_currency']);
 
@@ -437,6 +453,13 @@ class PriceAlert extends Module
 			$email,
 			null, null, null, null, null, dirname(__FILE__).'/mails/', false, $this->context->shop->id);
 		$db->update('ph_pricealert', ['date_send' => date("Y-m-d H:i:s")], "id_pricealert = $id");
+	}
+
+	public static function getShowConsent() {
+		$val = Configuration::get('PH_PRICEALERT_SHOW_CONSENT');
+		if ($val === false)
+			return true;
+		return $val;
 	}
 
 	public static function getMinDiscount() {
@@ -485,9 +508,7 @@ class PriceAlert extends Module
   			$images = (isset($comb[$combination][0])) ? $comb[$combination] : $product->getImages($context->language->id);
   		}
   		$image_id = (int)((isset($images[0]['id_image']) ? $images[0]['id_image'] : 0));
-  		$link = new Link();
-      $friendlyName = $product->link_rewrite[$context->language->id];
-  		$image = $link->getImageLink($friendlyName, $image_id, ImageType::getFormatedName('home'));
+  		$image = $this->getImageLink($product->link_rewrite, $image_id);
   		$currency = Currency::getCurrencyInstance((int)$data['id_format_currency']);
 
     	$data = array(
@@ -520,7 +541,8 @@ class PriceAlert extends Module
 					'separator' => Configuration::get('PS_ATTRIBUTE_ANCHOR_SEPARATOR'),
 					'defaultDiscount' => self::getDefaultDiscount(),
 					'minDiscount' => self::getMinDiscount(),
-					'showFullScale' => false
+					'showFullScale' => false,
+          'consent' => $this->getConsent()
 				),
 				'translation' => array(
 					'alert_me_when_price_drops_to' => $this->l('Alert me when price drops to'),
@@ -535,6 +557,55 @@ class PriceAlert extends Module
 		return $this->display(__FILE__, 'views/templates/hook/pricealert.tpl');
 	}
 
+  public function getConsent() {
+    if (self::getShowConsent()) {
+      if (Module::isInstalled('psgdpr') && Module::isEnabled('psgdpr')) {
+        Module::getInstanceByName('psgdpr');
+        $active = GDPRConsent::getConsentActive($this->id);
+        if ($active === "1" || $active === true || $active === 1) {
+          return GDPRConsent::getConsentMessage($this->id, $this->context->language->id);
+        }
+      }
+      return $this->l('By submitting this review you agree to use of your data as outlined in our privacy policy');
+    }
+    return '';
+  }
+
+  public function hookRegisterGDPRConsent() {
+  }
+
+  private function getCustomerDataSql($email, $idCustomer=null) {
+    $table = _DB_PREFIX_ . "ph_pricealert";
+    $email = psql($email);
+    $idCustomer = (int)$idCustomer;
+    $sql = "FROM $table WHERE email = '$email'";
+    if ($idCustomer) {
+      $sql .= " OR id_customer = $idCustomer";
+    }
+    return $sql;
+  }
+
+  public function hookActionExportGDPRData($customer) {
+    if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
+      $email = $customer['email'];
+      $id = isset($customer['id']) ? $customer['id'] : null;
+      $sql = "SELECT * " . $this->getCustomerDataSql($customer['email'], $id);
+      $data = Db::getInstance()->ExecuteS($sql);
+      if ($data) {
+        return json_encode($data, JSON_PRETTY_PRINT);
+      }
+    }
+  }
+
+  public function hookActionDeleteGDPRCustomer($customer) {
+    if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
+      $email = $customer['email'];
+      $id = isset($customer['id']) ? $customer['id'] : null;
+      $sql = "DELETE " . $this->getCustomerDataSql($customer['email'], $id);
+      return json_encode(Db::getInstance()->execute($sql));
+    }
+  }
+
 	protected function getCustomer() {
 		$customer = $this->context->customer;
 		return array(
@@ -548,14 +619,15 @@ class PriceAlert extends Module
 			$colors = array();
 			$groups = array();
 			$combinations = array();
-			$images = $product->getImages($this->context->language->id);
+      $context = $this->context;
+      $lang = $context->language->id;
+			$images = $product->getImages($lang);
 			$image_id = (int)(isset($images[0]['id_image']) ? $images[0]['id_image'] : 0);
-			$link = new Link();
-			$defaultImage = $link->getImageLink($product->link_rewrite, $image_id, ImageType::getFormatedName('home'));
+			$defaultImage = $this->getImageLink($product->link_rewrite, $image_id);
 
-			$attributes_groups = $product->getAttributesGroups($this->context->language->id);
+			$attributes_groups = $product->getAttributesGroups($lang);
 			if (is_array($attributes_groups) && $attributes_groups) {
-					$combination_images = $product->getCombinationImages($this->context->language->id);
+					$combination_images = $product->getCombinationImages($lang);
 					foreach ($attributes_groups as $row) {
 							$comb = (int)$row['id_product_attribute'];
 							$grp = (int)$row['id_attribute_group'];
@@ -592,7 +664,7 @@ class PriceAlert extends Module
 							$combinations[$comb]['quantity'] = (int)$row['quantity'];
 
 							if (isset($combination_images[$comb][0]['id_image'])) {
-									$combinations[$comb]['image'] = $link->getImageLink($product->link_rewrite, (int)($combination_images[$comb][0]['id_image']), ImageType::getFormatedName('home'));
+									$combinations[$comb]['image'] = $this->getImageLink($product->link_rewrite, (int)($combination_images[$comb][0]['id_image']));
 							}
 					}
 
@@ -627,4 +699,16 @@ class PriceAlert extends Module
 				'colors' => $colors,
 			);
 	}
+
+  private function getImageLink($rewrite, $imageId) {
+    if ($imageId) {
+      $link = $this->context->link;
+      if (is_array($rewrite)) {
+        $rewrite = $rewrite[$this->context->language->id];
+      }
+      $type = is_callable('ImageType', 'getFormattedName') ? ImageType::getFormattedName('home') : ImageType::getFormatedName('home');
+      return $link->getImageLink($rewrite, $imageId, $type);
+    }
+    return '';
+  }
 }

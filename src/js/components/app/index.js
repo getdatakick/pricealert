@@ -12,7 +12,8 @@ const mapStateToProps = (state: State) => ({
   useFixedLayout: state.width < 700,
   slider: state.slider,
   attributes: state.attributes,
-  email: state.email
+  email: state.email,
+  agree: state.agree
 });
 
 const actions = {

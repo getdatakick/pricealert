@@ -8,6 +8,7 @@ export type State = {
   step: Step,
   email: string,
   slider: number,
+  agree: boolean,
   attributes: AttributeValues
 }
 
@@ -69,7 +70,8 @@ export type Config = {
   defaultDiscount: number,
   minDiscount: number,
   showFullScale: boolean,
-  step: number
+  step: number,
+  consent: string
 }
 
 

@@ -11,6 +11,7 @@ export const Types = {
   setEmail: 'SET_EMAIL',
   setSlider: 'SET_SLIDER',
   setStep: 'SET_STEP',
+  agreeGDPR: 'AGREE_GDPR',
   submit: 'SUBMIT'
 };
 
@@ -69,6 +70,12 @@ type SetAttributeAction = {
   value: string
 }
 
+
+type AgreeAction = {
+  type: 'AGREE_GDPR',
+  agree: boolean
+}
+
 export type Action = (
   InitAction |
   UrlChangedAction |
@@ -79,7 +86,8 @@ export type Action = (
   SetSliderAction |
   SetAttributeAction |
   SetEmailAction |
-  SubmitAction
+  SubmitAction |
+  AgreeAction
 );
 
 export const init = (settings: Settings, url: string, width: number, email: string):InitAction => ({ type: Types.init, settings, url, width, email });
@@ -92,3 +100,4 @@ export const setStep = (step: Step):SetStepAction => ({ type: Types.setStep, ste
 export const setSlider = (slider: number):SetSliderAction => ({ type: Types.setSlider, slider });
 export const setAttribute = (attributeId: string, value:string):SetAttributeAction => ({ type: Types.setAttribute, attributeId, value });
 export const submit = (data: {}):SubmitAction => ({ type: Types.submit, data });
+export const onAgree = (agree: boolean):AgreeAction => ({ type: Types.agreeGDPR, agree });

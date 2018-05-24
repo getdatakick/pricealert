@@ -25,6 +25,7 @@ export type Props = {
   slider: number,
   attributes: AttributeValues,
   email: string,
+  agree: boolean,
   submit: ({})=>void
 }
 
@@ -32,10 +33,10 @@ class App extends React.PureComponent<Props> {
   static displayName = 'App';
 
   render() {
-    const { settings, snackbar, setSnackbar, show, setShow, step, useFixedLayout, email } = this.props;
+    const { settings, snackbar, setSnackbar, show, setShow, step, useFixedLayout, email, agree } = this.props;
     const translation = settings.translation;
     const validCombination = this.validCombination();
-    const valid = step === 'product' ? this.validateProduct(validCombination) : validateEmail(email);
+    const valid = step === 'product' ? this.validateProduct(validCombination) : agree && validateEmail(email);
     const action = step === 'product' ? this.nextStep : this.submit;
 
     const Wrapper = useFixedLayout ? FixedLayout : Dialog;
