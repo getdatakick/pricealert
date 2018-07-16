@@ -2,6 +2,8 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
+require_once(dirname(__FILE__).'/krona.php');
+
 class PriceAlert extends Module
 {
 	private $html = '';
@@ -47,6 +49,7 @@ class PriceAlert extends Module
       $this->registerHook('registerGDPRConsent') &&
       $this->registerHook('actionDeleteGDPRCustomer') &&
       $this->registerHook('actionExportGDPRData') &&
+      $this->registerHook('actionRegisterKronaAction') &&
 			$this->registerHook('header')
 		);
 	}
@@ -511,17 +514,21 @@ class PriceAlert extends Module
   		$image = self::getImageLinkStatic($context->link, $product->link_rewrite, $image_id, $context->language->id);
   		$currency = Currency::getCurrencyInstance((int)$data['id_format_currency']);
 
-    	$data = array(
+    	$emailData = array(
         '{email}' => $email,
   			'{price}' => Tools::displayPrice(Tools::convertPrice($price, $currency), $currency),
   			'{product_name}' => $productName,
   			'{product_url}' => $product->getLink(),
   			'{product_image}' => $image
   		);
-      // TODO
-      $lang = 1;
-  		Mail::Send($lang, 'pricealert_notification', str_replace("%s", $productName, Mail::l('New price alert for %s', $lang)), $data, $email, null, null, null, null, null, dirname(__FILE__).'/mails/', false, $context->shop->id);
+      $lang = (int)Configuration::get('PS_LANG_DEFAULT');
+  		Mail::Send($lang, 'pricealert_notification', str_replace("%s", $productName, Mail::l('New price alert for %s', $lang)), $emailData, $email, null, null, null, null, null, dirname(__FILE__).'/mails/', false, $context->shop->id);
     }
+    PriceAlertKrona::priceAlertCreated($data);
+  }
+
+  public function hookActionRegisterKronaAction($params) {
+    return PriceAlertKrona::getActions();
   }
 
 	public function hookDisplayProductButtons($params)
