@@ -515,7 +515,7 @@ class PriceAlert extends Module
   		$currency = Currency::getCurrencyInstance((int)$data['id_format_currency']);
 
     	$emailData = array(
-        '{email}' => $email,
+        '{email}' => $data['email'],
   			'{price}' => Tools::displayPrice(Tools::convertPrice($price, $currency), $currency),
   			'{product_name}' => $productName,
   			'{product_url}' => $product->getLink(),
