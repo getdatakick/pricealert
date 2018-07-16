@@ -12,7 +12,7 @@ class PriceAlert extends Module
 	{
 		$this->name = 'pricealert';
 		$this->tab = 'front_office_features';
-		$this->version = '1.0.10';
+		$this->version = '1.0.11';
 		$this->author = 'Petr Hucik <petr.hucik@gmail.com>';
 		$this->need_instance = 0;
 

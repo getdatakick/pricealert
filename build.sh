@@ -8,6 +8,7 @@ FILES+=("license.txt")
 FILES+=("logo.gif")
 FILES+=("logo.png")
 FILES+=("${CWD_BASENAME}.php")
+FILES+=("krona.php")
 FILES+=("readme_en.txt")
 
 MODULE_VERSION="$(sed -ne "s/\\\$this->version *= *['\"]\([^'\"]*\)['\"] *;.*/\1/p" ${CWD_BASENAME}.php)"
