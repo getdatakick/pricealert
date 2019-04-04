@@ -23,7 +23,6 @@ class PriceAlert extends Module
 		$this->description = $this->l('Allows user to subscribe for notification on price changes');
 		$this->html = '';
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
-		$this->module_key = '90d91b8dedd6fe3d1ae7d934e1c3509d';
 	}
 
 	public function install($delete_params = true)
@@ -621,13 +620,14 @@ class PriceAlert extends Module
 		);
 	}
 
-	protected function getProduct($product)
+	protected function getProduct($input)
 	{
+      $context = $this->context;
+      $lang = $context->language->id;
+      $product = new Product($this->getProductId($input), false, $lang);
 			$colors = array();
 			$groups = array();
 			$combinations = array();
-      $context = $this->context;
-      $lang = $context->language->id;
 			$images = $product->getImages($lang);
 			$image_id = (int)(isset($images[0]['id_image']) ? $images[0]['id_image'] : 0);
 			$defaultImage = $this->getImageLink($product->link_rewrite, $image_id);
@@ -722,5 +722,21 @@ class PriceAlert extends Module
     $link = $this->context->link;
     $language = $this->context->language->id;
     return self::getImageLinkStatic($link, $rewrite, $imageId, $language);
+  }
+
+  private static function getProductId($product) {
+    if (is_array($product) && isset($product['id_product'])) {
+      return (int)$product['id_product'];
+    }
+    if (is_object($product) && property_exists($product, 'id_product')) {
+      return (int)$product->id_product;
+    }
+    if (is_int($product)) {
+      return (int)$product;
+    }
+    if ((int)Tools::getValue('id_product')) {
+      return (int)Tools::getValue('id_product');
+    }
+    return null;
   }
 }
