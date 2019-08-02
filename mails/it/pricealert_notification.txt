@@ -1,0 +1,6 @@
+Avviso nuovo prezzo creato.
+
+email: {email}
+prodotto: {product_name}
+url prodotto: {product_url}
+prezzo: {price}
