@@ -6,14 +6,15 @@ require_once(dirname(__FILE__) . '/krona.php');
 
 class PriceAlert extends Module
 {
-    private $html = '';
+    private $page_name = null;
 
     public function __construct()
     {
         $this->name = 'pricealert';
         $this->tab = 'front_office_features';
-        $this->version = '1.0.12';
-        $this->author = 'Petr Hucik <petr.hucik@gmail.com>';
+        $this->version = '1.1.0';
+        $this->need_instance = 0;
+        $this->author = 'DataKick';
         $this->need_instance = 0;
 
         $this->bootstrap = true;
@@ -21,7 +22,6 @@ class PriceAlert extends Module
 
         $this->displayName = $this->l('Pricedrop Alert');
         $this->description = $this->l('Allows user to subscribe for notification on price changes');
-        $this->html = '';
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
     }
 
