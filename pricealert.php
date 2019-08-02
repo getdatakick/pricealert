@@ -572,7 +572,7 @@ class PriceAlert extends Module
           return GDPRConsent::getConsentMessage($this->id, $this->context->language->id);
         }
       }
-      return $this->l('By submitting this review you agree to use of your data as outlined in our privacy policy');
+      return $this->l('By submitting this request you agree to use of your data as outlined in our privacy policy');
     }
     return '';
   }
