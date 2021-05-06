@@ -30,7 +30,7 @@
     "less-loader": "^4.0.4",
     "rimraf": "^2.4.3",
     "style-loader": "^0.19.1",
-    "underscore": "^1.8.3",
+    "underscore": "^1.12.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.0.0",
     "webpack-dev-middleware": "^2.0.1",
