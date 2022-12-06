@@ -19,7 +19,7 @@
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-react": "^7.1.0",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.13.3",
+    "express": "^4.18.2",
     "file-loader": "^1.1.6",
     "flow-bin": "^0.61.0",
     "gulp": "github:gulpjs/gulp#4.0",
