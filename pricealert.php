@@ -1,19 +1,20 @@
 <?php
-if (!defined('_PS_VERSION_'))
+if (!defined('_PS_VERSION_')) {
     exit;
+}
 
 require_once(dirname(__FILE__) . '/krona.php');
 
 class PriceAlert extends Module
 {
-    private $page_name = null;
-
+    /**
+     * @throws PrestaShopException
+     */
     public function __construct()
     {
         $this->name = 'pricealert';
         $this->tab = 'front_office_features';
         $this->version = '1.1.0';
-        $this->need_instance = 0;
         $this->author = 'DataKick';
         $this->need_instance = 0;
 
@@ -25,19 +26,32 @@ class PriceAlert extends Module
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
     }
 
+    /**
+     * @param bool $delete_params
+     *
+     * @return bool
+     * @throws PrestaShopException
+     */
     public function install($delete_params = true)
     {
         if ($delete_params) {
-            if (!file_exists(dirname(__FILE__) . '/install.sql'))
+            if (!file_exists(dirname(__FILE__) . '/install.sql')) {
                 return false;
-            else if (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/install.sql'))
-                return false;
+            }
+            else {
+                if (!$sql = file_get_contents(dirname(__FILE__) . '/install.sql')) {
+                    return false;
+                }
+            }
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
             $sql = preg_split("/;\s*[\r\n]+/", $sql);
-            foreach ($sql as $query)
-                if ($query)
-                    if (!Db::getInstance()->execute(trim($query)))
+            foreach ($sql as $query) {
+                if ($query) {
+                    if (!Db::getInstance()->execute(trim($query))) {
                         return false;
+                    }
+                }
+            }
         }
 
         return (parent::install() &&
@@ -53,14 +67,25 @@ class PriceAlert extends Module
     }
 
 
+    /**
+     * @param bool $delete_params
+     *
+     * @return bool
+     * @throws PrestaShopException
+     */
     public function uninstall($delete_params = true)
     {
-        if (($delete_params && !$this->deleteTables()) || !parent::uninstall())
+        if (($delete_params && !$this->deleteTables()) || !parent::uninstall()) {
             return false;
+        }
 
         return true;
     }
 
+    /**
+     * @return bool
+     * @throws PrestaShopException
+     */
     private function deleteTables()
     {
         return Db::getInstance()->execute(
@@ -69,25 +94,44 @@ class PriceAlert extends Module
         );
     }
 
+    /**
+     * @return bool
+     * @throws PrestaShopException
+     */
     public function reset()
     {
-        if (!$this->uninstall(false))
+        if (!$this->uninstall(false)) {
             return false;
-        if (!$this->install(false))
+        }
+        if (!$this->install(false)) {
             return false;
+        }
 
         return true;
     }
 
+    /**
+     * @param array $params
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     public function hookHeader($params)
     {
-        $this->page_name = Dispatcher::getInstance()->getController();
-        if ($this->page_name == 'product') {
+        $pageName = Dispatcher::getInstance()->getController();
+        if ($pageName == 'product') {
             $this->context->controller->addJS($this->_path . 'views/js/pricealert-bootstrap.js');
             $this->context->controller->addCSS($this->_path . 'views/css/pricealert.css');
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $text
+     * @param string $output
+     *
+     * @return false
+     */
     private function percError($name, $text, &$output)
     {
         $fields = $this->getConfigurationFields();
@@ -96,6 +140,12 @@ class PriceAlert extends Module
         return false;
     }
 
+    /**
+     * @param string $name
+     * @param string $output
+     *
+     * @return false|float
+     */
     private function getPercValue($name, &$output)
     {
         $val = strval(Tools::getValue($name));
@@ -103,11 +153,15 @@ class PriceAlert extends Module
             return $this->percError($name, $this->l('Invalid value for %s'), $output);
         }
         $val = (float)($val);
-        if ($val < 0.0 || $val > 100.0)
+        if ($val < 0.0 || $val > 100.0) {
             return $this->percError($name, $this->l('%s value must be between 0 and 100'), $output);
+        }
         return $val / 100.0;
     }
 
+    /**
+     * @return array[]
+     */
     private function getConfigurationFields()
     {
         return array(
@@ -159,6 +213,11 @@ class PriceAlert extends Module
         );
     }
 
+    /**
+     * @return string
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
     public function getContent()
     {
         $output = null;
@@ -183,6 +242,11 @@ class PriceAlert extends Module
     }
 
 
+    /**
+     * @return string
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
     public function displayForm()
     {
         // Get default language
@@ -238,6 +302,11 @@ class PriceAlert extends Module
         return $helper->generateForm($fields_form);
     }
 
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
     public function hookDatakickExtend($params)
     {
         return array(
@@ -404,6 +473,12 @@ class PriceAlert extends Module
         );
     }
 
+    /**
+     * @param array $params
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     public function hookActionProductUpdate($params)
     {
         $db = DB::getInstance(_PS_USE_SQL_SLAVE_);
@@ -422,12 +497,20 @@ class PriceAlert extends Module
         }
     }
 
+    /**
+     * @param array $alert
+     * @param Product $product
+     * @param int $combination
+     * @param float $price
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     public function sendAlert($alert, $product, $combination, $price)
     {
         $db = DB::getInstance();
         $id = (int)$alert['id_pricealert'];
         $email = $alert['email'];
-        $images = array();
         if ($combination == null) {
             $images = $product->getImages($this->context->language->id);
         } else {
@@ -459,46 +542,78 @@ class PriceAlert extends Module
         $db->update('ph_pricealert', ['date_send' => date("Y-m-d H:i:s")], "id_pricealert = $id");
     }
 
+    /**
+     * @return string|true|null
+     * @throws PrestaShopException
+     */
     public static function getShowConsent()
     {
         $val = Configuration::get('PH_PRICEALERT_SHOW_CONSENT');
-        if ($val === false)
+        if ($val === false) {
             return true;
+        }
         return $val;
     }
 
+    /**
+     * @return float
+     * @throws PrestaShopException
+     */
     public static function getMinDiscount()
     {
         $val = Configuration::get('PH_PRICEALERT_MIN_DISCOUNT');
-        if ($val === false)
+        if ($val === false) {
             return 0.2;
+        }
         return (float)$val;
     }
 
+    /**
+     * @return float
+     * @throws PrestaShopException
+     */
     public static function getDefaultDiscount()
     {
         $val = Configuration::get('PH_PRICEALERT_DEFAULT_DISCOUNT');
-        if ($val === false)
+        if ($val === false) {
             return 0.8;
+        }
         return (float)$val;
     }
 
+    /**
+     * @return string|true|null
+     * @throws PrestaShopException
+     */
     public static function getSendNotification()
     {
         $val = Configuration::get('PH_PRICEALERT_SEND_NOTIFICATION');
-        if ($val === false)
+        if ($val === false) {
             return true;
+        }
         return $val;
     }
 
+    /**
+     * @return false|string|null
+     * @throws PrestaShopException
+     */
     public static function getNotificationEmail()
     {
         $val = Configuration::get('PH_PRICEALERT_NOTIFICATION_EMAIL');
-        if ($val === false || !Validate::isEmail($val))
+        if ($val === false || !Validate::isEmail($val)) {
             return Configuration::get('PS_SHOP_EMAIL');
+        }
         return $val;
     }
 
+    /**
+     * @param array $data
+     * @param Context $context
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     public static function sendNotification($data, $context)
     {
         if (self::getSendNotification()) {
@@ -510,7 +625,6 @@ class PriceAlert extends Module
             }
             $productName = $product->getProductName($product->id, $combination);
             $price = $data['price'];
-            $images = array();
             if (is_null($combination)) {
                 $images = $product->getImages($context->language->id);
             } else {
@@ -534,11 +648,23 @@ class PriceAlert extends Module
         PriceAlertKrona::priceAlertCreated($data);
     }
 
+    /**
+     * @param array $params
+     *
+     * @return array[]
+     */
     public function hookActionRegisterKronaAction($params)
     {
         return PriceAlertKrona::getActions();
     }
 
+    /**
+     * @param array $params
+     *
+     * @return string
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
     public function hookDisplayProductButtons($params)
     {
         $product = $params['product'];
@@ -572,6 +698,12 @@ class PriceAlert extends Module
         return $this->display(__FILE__, 'views/templates/hook/pricealert.tpl');
     }
 
+    /**
+     * @return string
+     * @throws PrestaShopException
+     *
+     * @noinspection PhpUndefinedClassInspection
+     */
     public function getConsent()
     {
         if (self::getShowConsent()) {
@@ -587,10 +719,20 @@ class PriceAlert extends Module
         return '';
     }
 
+    /**
+     * @return void
+     */
     public function hookRegisterGDPRConsent()
     {
     }
 
+    /**
+     * @param string $email
+     * @param int $idCustomer
+     *
+     * @return string
+     * @throws PrestaShopException
+     */
     private function getCustomerDataSql($email, $idCustomer = null)
     {
         $table = _DB_PREFIX_ . "ph_pricealert";
@@ -603,10 +745,15 @@ class PriceAlert extends Module
         return $sql;
     }
 
+    /**
+     * @param array $customer
+     *
+     * @return false|string|void
+     * @throws PrestaShopException
+     */
     public function hookActionExportGDPRData($customer)
     {
         if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
-            $email = $customer['email'];
             $id = isset($customer['id']) ? $customer['id'] : null;
             $sql = "SELECT * " . $this->getCustomerDataSql($customer['email'], $id);
             $data = Db::getInstance()->ExecuteS($sql);
@@ -616,16 +763,24 @@ class PriceAlert extends Module
         }
     }
 
+    /**
+     * @param array $customer
+     *
+     * @return false|string|void
+     * @throws PrestaShopException
+     */
     public function hookActionDeleteGDPRCustomer($customer)
     {
         if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
-            $email = $customer['email'];
             $id = isset($customer['id']) ? $customer['id'] : null;
             $sql = "DELETE " . $this->getCustomerDataSql($customer['email'], $id);
             return json_encode(Db::getInstance()->execute($sql));
         }
     }
 
+    /**
+     * @return array
+     */
     protected function getCustomer()
     {
         $customer = $this->context->customer;
@@ -635,6 +790,12 @@ class PriceAlert extends Module
         );
     }
 
+    /**
+     * @param mixed $input
+     *
+     * @return array
+     * @throws PrestaShopException
+     */
     protected function getProduct($input)
     {
         $context = $this->context;
@@ -693,7 +854,7 @@ class PriceAlert extends Module
             // wash attributes list (if some attributes are unavailables and if allowed to wash it)
             if (!Product::isAvailableWhenOutOfStock($product->out_of_stock) && Configuration::get('PS_DISP_UNAVAILABLE_ATTR') == 0) {
                 foreach ($groups as &$group) {
-                    foreach ($group['attributes_quantity'] as $key => &$quantity) {
+                    foreach ($group['attributes_quantity'] as $key => $quantity) {
                         if ($quantity <= 0) {
                             unset($group['attributes'][$key]);
                         }
@@ -722,18 +883,38 @@ class PriceAlert extends Module
         );
     }
 
+    /**
+     * @param Link $link
+     * @param string $rewrite
+     * @param int $imageId
+     * @param int $languageId
+     *
+     * @return string
+     * @throws PrestaShopException
+     *
+     * @noinspection PhpUndefinedMethodInspection
+     */
     private static function getImageLinkStatic($link, $rewrite, $imageId, $languageId)
     {
         if ($imageId) {
             if (is_array($rewrite)) {
                 $rewrite = $rewrite[$languageId];
             }
-            $type = is_callable(array('ImageType', 'getFormattedName')) ? ImageType::getFormattedName('home') : ImageType::getFormatedName('home');
+            $type = method_exists(ImageType::class, 'getFormattedName')
+                ? ImageType::getFormattedName('home')
+                : ImageType::getFormatedName('home');
             return $link->getImageLink($rewrite, $imageId, $type);
         }
         return '';
     }
 
+    /**
+     * @param string $rewrite
+     * @param int $imageId
+     *
+     * @return string
+     * @throws PrestaShopException
+     */
     private function getImageLink($rewrite, $imageId)
     {
         $link = $this->context->link;
@@ -741,6 +922,11 @@ class PriceAlert extends Module
         return self::getImageLinkStatic($link, $rewrite, $imageId, $language);
     }
 
+    /**
+     * @param mixed $product
+     *
+     * @return int|null
+     */
     private static function getProductId($product)
     {
         if (is_array($product) && isset($product['id_product'])) {

@@ -1,11 +1,15 @@
 <?php
-if (!defined('_PS_VERSION_'))
+if (!defined('_PS_VERSION_')) {
     exit;
+}
 
 class PriceAlertKrona
 {
     const ACTION_PRICEALERT_CREATED = 'pricealert_created';
 
+    /**
+     * @return array[]
+     */
     public static function getActions()
     {
         return [
@@ -16,19 +20,39 @@ class PriceAlertKrona
         ];
     }
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     public static function priceAlertCreated($data)
     {
         self::triggerAction(self::ACTION_PRICEALERT_CREATED, self::getProductLink($data['id_product']));
     }
 
+    /**
+     * @param int $productId
+     *
+     * @return string|null
+     * @throws PrestaShopException
+     */
     private static function getProductLink($productId)
     {
-        if ((int)$productId) {
+        $productId = (int)$productId;
+        if ($productId) {
             return \Context::getContext()->link->getProductLink($productId);
         }
         return null;
     }
 
+    /**
+     * @param string $action
+     * @param string $url
+     *
+     * @return void
+     * @throws PrestaShopException
+     */
     private static function triggerAction($action, $url = null)
     {
         $customer = \Context::getContext()->customer;
